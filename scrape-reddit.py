@@ -11,6 +11,10 @@ reddit = praw.Reddit(
     user_agent=os.getenv('USER_AGENT')
 )
 
-top_post = reddit.subreddit('MachineLearning').top(limit=10)
-for posts in top_post:
-    print(posts.title)
+posts = []
+ml_subreddit = reddit.subreddit('MachineLearning')
+for post in ml_subreddit.hot(limit=100):
+    posts.append([post.title, post.score, post.id, post.subreddit, post.url, post.num_comments, post.selftext, post.created])
+posts = pd.DataFrame(posts,columns=['title', 'score', 'id', 'subreddit', 'url', 'num_comments', 'body', 'created'])
+print(posts)
+
